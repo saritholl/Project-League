@@ -21,6 +21,10 @@ class stubMatchesDAL {
     this.matches.push(match)
   }
 
+  getMatchById(matchId) {
+    return this.matches.find(match => match.id == matchId)
+  }
+
   reset() {
     this.matches = []
     this.current_id = 0

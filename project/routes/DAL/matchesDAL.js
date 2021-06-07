@@ -1,14 +1,13 @@
-const DButils = require("../../utils/DButils");
+const DButils = require("../utils/DButils");
 
-// TODO: tests
 class matchesDAL {
   async addMatch(match) {
     await DButils.execQuery(
-      `insert into dbo.Matches (roundId,homeTeamId,awayTeamId,refereeId,startTime)`
-      + ` values (${match.roundId},${match.homeTeamId},${match.awayTeamId},'${match.refereeId}','${match.startTime}')`
+      `insert into dbo.Fixtures (roundId,homeTeamId,awayTeamId,refereeId,startTime)`
+      + ` values (${match.roundId},${match.homeTeamId},${match.awayTeamId},${match.refereeId},'${match.startTime}')`
     );
   
-    id = await DButils.execQuery(
+    const id = await DButils.execQuery(
       `select @@identity`
     );
   
@@ -16,9 +15,8 @@ class matchesDAL {
   }
 
   async getMatchesByTeamId(team_id) {
-    return await DButils.execQuery(`SELECT * FROM dbo.Matches where homeTeamId = '${team_id}' or awayTeamId = '${team_id}'`)
+    return await DButils.execQuery(`SELECT * FROM dbo.Fixtures where homeTeamId = ${team_id} or awayTeamId = ${team_id}`)
   }
 }
 
-
-exports.matchesDAL = matchesDAL;
+module.exports = matchesDAL

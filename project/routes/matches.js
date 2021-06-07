@@ -4,6 +4,7 @@ const matches_utils = require("./BL/matchesBL");
 
 // TODO: test it + many validations
 // TODO: catch exceptions?
+// TODO: test permissions
 router.post("/add", async (req, res, next) => {
   try{
     matchId = await matches_utils.addMatch(
