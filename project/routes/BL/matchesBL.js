@@ -1,3 +1,4 @@
+const { Int } = require("mssql");
 const Errors = require("../../errors");
 
 class matchesBL {
@@ -9,6 +10,35 @@ class matchesBL {
   }
 
   async addMatch(roundId, homeTeamId, awayTeamId, stadiumId, startTime) {
+
+    if (roundId == null || homeTeamId == null || awayTeamId == null || stadiumId == null || startTime == null) {
+      throw {
+        "message": Errors.PARAMETER_NULL,
+        "code": 404
+      }
+    }
+
+    if (!(Number.isInteger(roundId)) || !(Number.isInteger(homeTeamId)) || !(Number.isInteger(awayTeamId)) || !(Number.isInteger(stadiumId)) || !(typeof startTime === 'string')){
+      throw {
+        "message": Errors.WRONG_INSTANCE_OF_PARAMETER,
+        "code": 400
+      }
+    }
+
+    if (roundId < 0 || homeTeamId < 0 || awayTeamId < 0 || stadiumId < 0 || startTime < 0) {
+      throw {
+        "message": Errors.INVALID_PARAMETER,
+        "code": 400
+      }
+    }
+
+    if (!Number.isInteger(Date.parse(startTime))) {
+      throw {
+        "message": Errors.INVALID_PARAMETER,
+        "code": 400
+      }
+    }
+
     if (homeTeamId == awayTeamId) {
       throw {
         "message": Errors.TEAM_AGAINST_ITSELFS,
