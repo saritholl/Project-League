@@ -25,7 +25,7 @@ class matchesBL {
     }
 
     const current_game_date = new Date(startTime).toLocaleDateString()
-    const homeTeamMatches = await this.getTeamMatches(homeTeamId)
+    const homeTeamMatches = await this.#getTeamMatches(homeTeamId)
 
     if (homeTeamMatches.some(match => new Date(match.startTime).toLocaleDateString() == current_game_date)) {
       throw {
@@ -34,7 +34,7 @@ class matchesBL {
       }
     }
 
-    const awayTeamMatches = await this.getTeamMatches(awayTeamId)
+    const awayTeamMatches = await this.#getTeamMatches(awayTeamId)
     if (awayTeamMatches.some(match => new Date(match.startTime).toLocaleDateString() == current_game_date)) {
       throw {
         "message": Errors.TEAM_ALREADY_PLAYS_THIS_DAY,
@@ -113,7 +113,7 @@ class matchesBL {
     return this.matchesDAL.addMatch({ roundId, homeTeamId, awayTeamId, stadiumId, startTime })
   }
 
-  async getTeamMatches(homeTeamId) {
+  async #getTeamMatches(homeTeamId) {
     return this.matchesDAL.getMatchesByTeamId(homeTeamId)
   }
 }
