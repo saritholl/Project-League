@@ -2,24 +2,20 @@ const DButils = require("../utils/DButils");
 const api_domain = "https://soccer.sportmonks.com/api/v2.0";
 const axios = require("axios");
 
-// TODO: tests
-class teamsDAL {
-  async getTeamById(teamId) {
+class roundsDAL {
+  async getRoundById(roundId) {
     try {
-      const team = await axios.get(`${api_domain}/teams/${teamId}`,
+      const round = await axios.get(`${api_domain}/rounds/${roundId}`,
         {
           params: {
-            include: 'league',
             api_token: process.env.sportmonks_api_token,
           },
         }
       );
 
-      if (team.data.data) {
+      if (round.data.data) {
         return {
-          id: team.data.data.id,
-          name: team.data.data.name,
-          leagueId: team.data.data.league.data.id
+          id: round.data.data.id,
         };
       }
       else {
@@ -31,4 +27,4 @@ class teamsDAL {
   }
 }
 
-module.exports = teamsDAL
+module.exports = roundsDAL

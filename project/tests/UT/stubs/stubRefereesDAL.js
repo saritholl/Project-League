@@ -7,7 +7,19 @@ class stubRefereesDAL {
     return this.promise(referee)
   }
 
-  givenReferee(referee) {
+  givenReferee1(referee) {
+    this.referees.push(referee)
+  }
+
+  givenReferee2(referee) {
+    this.referees.push(referee)
+  }
+
+  givenReferee3(referee) {
+    this.referees.push(referee)
+  }
+
+  givenReferee4(referee) {
     this.referees.push(referee)
   }
 
