@@ -3,7 +3,7 @@ class stubTeamsDAL {
   teams = []
 
   async getTeamById(teamId) {
-    const team = this.teams.find(referee => referee.id == teamId)
+    const team = this.teams.find(team => team.id == teamId)
     return this.promise(team)
   }
 
