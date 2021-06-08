@@ -51,6 +51,8 @@ const auth = require("./routes/auth");
 const users = require("./routes/users");
 const league = require("./routes/league");
 const teams = require("./routes/teams");
+const matches = require("./routes/matches");
+
 
 //#endregion
 

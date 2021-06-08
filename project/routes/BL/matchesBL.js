@@ -1,10 +1,5 @@
 const Errors = require("../../errors");
 
-
-// TODO: IT matchesBL
-// TODO: IT matches.js
-// TODO: IT stadiumsDAL - todo
-
 class matchesBL {
   constructor(matchesDAL, teamsDAL, stadiumsDAL, roundsDAL) {
     this.matchesDAL = matchesDAL

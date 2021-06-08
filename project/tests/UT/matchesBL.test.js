@@ -6,9 +6,6 @@ const stubRoundsDAL = require('./stubs/stubRoundsDAL');
 const Errors = require("../../errors");
 
 
-// הנתונים תקינים מבחינת הטיפוס
-//  Test params not null
-
 const matchesDal = new stubMatchesDAL()
 const teamsDal = new stubTeamsDAL()
 const stadiumsDal = new stubStadiumsDAL()
@@ -24,6 +21,9 @@ const tomorrowDate = (new Date((new Date(new Date().setDate(new Date().getDate()
 const badTime = (new Date((new Date(tomorrowDate).setHours(3) - (new Date()).getTimezoneOffset() * 60000))).toISOString().slice(0, -1)
 const pastTime = new Date(new Date(new Date().setDate(new Date().getDate() - 1)).setHours(18) - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -1)
 const startTime = (new Date((new Date(new Date().setDate(new Date().getDate() + 1)).setHours(18) - (new Date()).getTimezoneOffset() * 60000))).toISOString().slice(0, -1)
+
+// הנתונים תקינים מבחינת הטיפוס
+//  Test params not null
 
 roundsDal.givenRound({
     id: roundId
