@@ -1,13 +1,9 @@
-// const axios = require("axios");
-// const api_domain = "https://soccer.sportmonks.com/api/v2.0";
 const Errors = require("../../errors");
 
 
 // TODO: IT matchesBL
 // TODO: IT matches.js
-// TODO: IT teamsDAL - todo
 // TODO: IT stadiumsDAL - todo
-// TODO: UT matchesBL - more tests
 
 class matchesBL {
   constructor(matchesDAL, teamsDAL, stadiumsDAL, roundsDAL) {
