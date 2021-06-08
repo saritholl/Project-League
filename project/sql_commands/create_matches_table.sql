@@ -9,10 +9,10 @@ CREATE TABLE dbo.Fixtures
     homeTeamId INT NOT NULL,
     awayTeamId INT NOT NULL,
     stadiumId INT NOT NULL,
-    refereeId1 INT NOT NULL,
-    refereeId2 INT NOT NULL,
-    refereeId3 INT NOT NULL,
-    refereeId4 INT NOT NULL,
+    refereeId1 INT,
+    refereeId2 INT,
+    refereeId3 INT,
+    refereeId4 INT,
     startTime VARCHAR(255) NOT NULL,
 );
 GO

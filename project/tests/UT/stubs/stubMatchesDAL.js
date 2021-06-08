@@ -17,12 +17,6 @@ class stubMatchesDAL {
     
   }
 
-  async getMatchesByRefereeId(referee_id) {
-    const matches_of_referee = this.matches.filter(match => match.refereeId1 == referee_id ||  match.refereeId2 == referee_id ||  match.refereeId3 == referee_id ||  match.refereeId4 == referee_id)
-    return this.promise(matches_of_referee)
-    
-  }
-
   givenMatch(match) {
     this.matches.push(match)
   }
