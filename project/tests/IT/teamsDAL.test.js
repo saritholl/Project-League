@@ -12,6 +12,6 @@ test(`return team if exist`, async () => {
         {
             id,
             name: 'Nordsjælland',
-            leagueId: 271,
+            leagueId: 320,
         });
 });
