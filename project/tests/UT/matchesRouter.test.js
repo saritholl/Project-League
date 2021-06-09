@@ -1,12 +1,13 @@
 const request = require('supertest')
-var session = require('supertest-session');
-
-var express = require("express");
+// var session = require('supertest-session');
 const Errors = require("../../errors");
 
-var app = express();
-const matches = require("../../routes/matches");
-app.use("/matches", matches);
+const main = require('../../main');
+var server = request.agent(main.app);
+
+// jest.setTimeout(4000);
+
+require('dotenv').config();
 
 // var testSession = session(app, {
 //   before: function (req) {
@@ -14,61 +15,65 @@ app.use("/matches", matches);
 //   }
 // });
 
-var cookieAccess = {
-  domain: 'example.com',
-  path: '/testpath',
-  secure: true,
-  script: true,
-};
-var testSession = session(app, {
-  cookieAccess: cookieAccess,
-  before: function (req) {
-    req.cookies = this.cookies.toValueString();
-    req.session = "sarit"
-  },
-});
+
+
+// var cookieAccess = {
+//   domain: 'example.com',
+//   path: '/testpath',
+//   secure: true,
+//   script: true,
+// };
+// var testSession = session(app, {
+//   cookieAccess: cookieAccess,
+//   before: function (req) {
+//     req.cookies = this.cookies.toValueString();
+//     req.session = "sarit"
+//   },
+// });
 
 // beforeEach(function () {
 //   testSession = session(app);
 // });
 
+const roundId = 240941
+const homeTeamId = 2394
+const awayTeamId = 180
+const stadiumId = 5599
+const startTime = "12412"
+
+// TODO: tests:
+// 1 - works
+// 2 - no user
+// 3 user 404
+// 4 - no admin
 describe('add match endpoint', () => {
   it('should fail if user is not logged in', async () => {
-    const res = await request(app)
+    const res = await server
       .post('/matches/add')
-      .set('Content-type', 'application/x-www-form-urlencoded')
       .send({
-        roundId: 1,
-        homeTeamId: 22,
-        awayTeamId: 54,
-        refereeId: 13,
-        startTime: "1"
+        roundId,
+        homeTeamId,
+        awayTeamId,
+        stadiumId,
+        startTime
       })
 
     expect(res.statusCode).toBe(403)
     expect(res.text).toBe(Errors.USER_NOT_LOGGED_IN)
-
   })
 
-  it('should fail create match if not admin', function (done) {
+  it(`should fail if user is doesn't exists`, async () => {
+    const res = await server
+      .post('/matches/add')
+      .send({
+        roundId,
+        homeTeamId,
+        awayTeamId,
+        stadiumId,
+        startTime
+      })
 
-    testSession.post('/matches/add')
-      .send({ username: 'foo', password: 'password' })
-      .expect(403)
-      .end(done);
-
-    // const res = await request(app)
-    //   .post('/matches/add')
-    //   .set('Content-type', 'application/x-www-form-urlencoded')
-    //   .send({
-    //     roundId: 1,
-    //     homeTeamId: 22,
-    //     awayTeamId: 54,
-    //     refereeId: 13,
-    //     startTime: "1"
-    //   })
-
-    expect(1).toBe(1)
-    // expect(res.text).toBe(Errors.USER_MUST_BE_ADMIN)
+    expect(res.statusCode).toBe(403)
+    expect(res.text).toBe(Errors.USER_NOT_LOGGED_IN)
   })
 })
