@@ -357,6 +357,13 @@ test(`can't add match with not existing round`, async () => {
         })
 });
 
+test(`can't add match of non existing home team`, async () => {
+    await expect(bl.addMatch(roundId, randomNumber(), awayTeamId, stadiumId, tomorrowDate)).rejects.toEqual(
+        {
+            "message": Errors.TEAM_NOT_FOUND,
+            "code": 404
+        })
+});
 test(`can't add match of non existing away team`, async () => {
     await expect(bl.addMatch(roundId, homeTeamId, randomNumber(), stadiumId, tomorrowDate)).rejects.toEqual(
         {
