@@ -1,4 +1,3 @@
-const { Int } = require("mssql");
 const Errors = require("../../errors");
 
 class matchesBL {
@@ -7,7 +6,7 @@ class matchesBL {
     this.teamsDAL = teamsDAL
     this.stadiumsDAL = stadiumsDAL
     this.roundsDAL = roundsDAL
-  }
+}
 
   async addMatch(roundId, homeTeamId, awayTeamId, stadiumId, startTime) {
 
