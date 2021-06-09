@@ -1,15 +1,21 @@
 var express = require("express");
 var router = express.Router();
-const matches_utils = require("./BL/matchesBL");
+const matchesBL = require("./BL/matchesBL");
+const matchesDAL = require("./DAL/matchesDAL");
+const roundsDAL = require("./DAL/roundsDAL");
+const stadiumsDAL = require("./DAL/stadiumsDAL");
+const teamsDAL = require("./DAL/teamsDAL");
+
 const Errors = require("../errors");
 const DButils = require("./utils/DButils");
+const matches_utils = new matchesBL(new matchesDAL(), new teamsDAL(), new stadiumsDAL(), new roundsDAL())
 
 router.post("/add", async (req, res, next) => {
 
-  if (!req.session || !req.session.user_id) {
+  if (!req.headers || !req.headers.user_id) {
     res.status(403).send(Errors.USER_NOT_LOGGED_IN)
   } else {
-    const user = await DButils.execQuery(`SELECT * FROM dbo.Users where id = ${req.session.user_id}`)
+    const user = await DButils.execQuery(`SELECT * FROM dbo.Users where id = ${req.headers.user_id}`)
 
     if (user.length == 0) {
       res.status(403).send(Errors.USER_NOT_LOGGED_IN)
@@ -17,18 +23,29 @@ router.post("/add", async (req, res, next) => {
       res.status(403).send(Errors.USER_MUST_BE_ADMIN)
     } else {
 
+      const roundId = ~~req.body.roundId
+      const homeTeamId = ~~req.body.homeTeamId
+      const awayTeamId = ~~req.body.awayTeamId
+      const stadiumId = ~~req.body.stadiumId
+      const startTime = req.body.startTime
+
       try {
         matchId = await matches_utils.addMatch(
-          ~~req.body.roundId,
-          ~~req.body.homeTeamId,
-          ~~req.body.awayTeamId,
-          ~~req.body.stadiumId,
-          req.body.startTime,
+          roundId,
+          homeTeamId,
+          awayTeamId,
+          stadiumId,
+          startTime
         );
 
-        const match_details = await matches_utils.getMatchDetails(matchId);
-
-        res.status(201).send(match_details)
+        res.status(201).send({
+          id: matchId,
+          roundId,
+          homeTeamId,
+          awayTeamId,
+          stadiumId,
+          startTime
+        })
       }
       catch (error) {
         next(error);

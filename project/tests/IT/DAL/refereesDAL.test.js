@@ -1,6 +1,6 @@
 const { expect } = require('@jest/globals');
-const refereesDAL = require('../../routes/DAL/refereesDAL');
-const DButils = require("../../routes/utils/DButils");
+const refereesDAL = require('../../../routes/DAL/refereesDAL');
+const DButils = require("../../../routes/utils/DButils");
 const refereesDal = new refereesDAL()
 
 beforeEach(async () => {

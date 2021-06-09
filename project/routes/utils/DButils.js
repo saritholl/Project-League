@@ -5,7 +5,9 @@ const config = {
   user: process.env.tedious_userName,
   password: process.env.tedious_password,
   server: process.env.tedious_server,
-  database: process.env.tedious_database,
+  // TODO:
+  // database: process.env.tedious_database,
+  database: 'football-management-group',
   options: {
     encrypt: true,
     enableArithAbort: true

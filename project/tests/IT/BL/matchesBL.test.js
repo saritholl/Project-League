@@ -1,13 +1,13 @@
 
 const { expect } = require('@jest/globals');
 
-const matchesDAL = require('../../routes/DAL/matchesDAL');
-const stadiumsDAL = require('../../routes/DAL/stadiumsDAL');
-const roundsDAL = require('../../routes/DAL/roundsDAL');
-const teamsDAL = require('../../routes/DAL/teamsDAL');
+const matchesDAL = require('../../../routes/DAL/matchesDAL');
+const stadiumsDAL = require('../../../routes/DAL/stadiumsDAL');
+const roundsDAL = require('../../../routes/DAL/roundsDAL');
+const teamsDAL = require('../../../routes/DAL/teamsDAL');
 
-const matchesBL = require('../../routes/BL/matchesBL');
-const DButils = require("../../routes/utils/DButils");
+const matchesBL = require('../../../routes/BL/matchesBL');
+const DButils = require("../../../routes/utils/DButils");
 const matchesBl = new matchesBL(new matchesDAL(), new teamsDAL(), new stadiumsDAL(), new roundsDAL())
 
 beforeEach(async () => {
