@@ -24,7 +24,7 @@ var testSession = session(app, {
   cookieAccess: cookieAccess,
   before: function (req) {
     req.cookies = this.cookies.toValueString();
-    req.session = "tom"
+    req.session = "sarit"
   },
 });
 
