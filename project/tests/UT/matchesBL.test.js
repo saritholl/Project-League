@@ -6,9 +6,6 @@ const stubRoundsDAL = require('./stubs/stubRoundsDAL');
 const Errors = require("../../errors");
 
 
-// הנתונים תקינים מבחינת הטיפוס
-//  Test params not null
-
 const matchesDal = new stubMatchesDAL()
 const teamsDal = new stubTeamsDAL()
 const stadiumsDal = new stubStadiumsDAL()
@@ -24,6 +21,7 @@ const tomorrowDate = (new Date((new Date(new Date().setDate(new Date().getDate()
 const badTime = (new Date((new Date(tomorrowDate).setHours(3) - (new Date()).getTimezoneOffset() * 60000))).toISOString().slice(0, -1)
 const pastTime = new Date(new Date(new Date().setDate(new Date().getDate() - 1)).setHours(18) - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -1)
 const startTime = (new Date((new Date(new Date().setDate(new Date().getDate() + 1)).setHours(18) - (new Date()).getTimezoneOffset() * 60000))).toISOString().slice(0, -1)
+
 
 roundsDal.givenRound({
     id: roundId
@@ -49,6 +47,150 @@ stadiumsDal.givenStadium({
 beforeEach(() => {
     matchesDal.reset()
 });
+
+//////////////////////////////// PARAMS NOT NULL //////////////////////////////////
+test(`roundId is null`, async () => {
+    await expect(bl.addMatch(null, homeTeamId, awayTeamId, stadiumId, startTime)).rejects.toEqual(
+        {
+            "message": Errors.PARAMETER_NULL,
+            "code": 404
+        })
+
+});
+
+test(`homeTeamId is null`, async () => {
+    await expect(bl.addMatch(roundId, null, awayTeamId, stadiumId, startTime)).rejects.toEqual(
+        {
+            "message": Errors.PARAMETER_NULL,
+            "code": 404
+        })
+
+});
+
+test(`awayTeamId is null`, async () => {
+    await expect(bl.addMatch(roundId, homeTeamId, null, stadiumId, startTime)).rejects.toEqual(
+        {
+            "message": Errors.PARAMETER_NULL,
+            "code": 404
+        })
+
+});
+
+test(`stadiumId is null`, async () => {
+    await expect(bl.addMatch(roundId, homeTeamId, awayTeamId, null, startTime)).rejects.toEqual(
+        {
+            "message": Errors.PARAMETER_NULL,
+            "code": 404
+        })
+
+});
+
+test(`startTime is null`, async () => {
+    await expect(bl.addMatch(roundId, homeTeamId, awayTeamId, stadiumId, null)).rejects.toEqual(
+        {
+            "message": Errors.PARAMETER_NULL,
+            "code": 404
+        })
+
+});
+
+
+///////////////////////////////////// CORRECT INSTANCES ///////////////////////////////////////////////////////////
+
+test(`roundId must be integer`, async () => {
+    await expect(bl.addMatch('roundId', homeTeamId, awayTeamId, stadiumId, startTime)).rejects.toEqual(
+        {
+            "message": Errors.WRONG_INSTANCE_OF_PARAMETER,
+            "code": 400
+        })
+
+});
+
+test(`homeTeamId must be integer`, async () => {
+    await expect(bl.addMatch(roundId, 'homeTeamId', awayTeamId, stadiumId, startTime)).rejects.toEqual(
+        {
+            "message": Errors.WRONG_INSTANCE_OF_PARAMETER,
+            "code": 400
+        })
+
+});
+
+test(`awayTeamId must be integer`, async () => {
+    await expect(bl.addMatch(roundId, homeTeamId, 'awayTeamId', stadiumId, startTime)).rejects.toEqual(
+        {
+            "message": Errors.WRONG_INSTANCE_OF_PARAMETER,
+            "code": 400
+        })
+
+});
+
+test(`stadiumId must be integer`, async () => {
+    await expect(bl.addMatch(roundId, homeTeamId, awayTeamId, 'stadiumId', startTime)).rejects.toEqual(
+        {
+            "message": Errors.WRONG_INSTANCE_OF_PARAMETER,
+            "code": 400
+        })
+
+});
+
+test(`startTime must be String`, async () => {
+    await expect(bl.addMatch(roundId, homeTeamId, awayTeamId, stadiumId, 1)).rejects.toEqual(
+        {
+            "message": Errors.WRONG_INSTANCE_OF_PARAMETER,
+            "code": 400
+        })
+
+});
+
+//////////////////////////////////////// VALIDATE PARAMETERS ///////////////////////////////////////////
+
+test(`roundId must be a valide number`, async () => {
+    await expect(bl.addMatch(-12 , homeTeamId, awayTeamId, stadiumId, startTime)).rejects.toEqual(
+        {
+            "message": Errors.INVALID_PARAMETER,
+            "code": 400
+        })
+
+});
+
+test(`homeTeamId must be a valide number`, async () => {
+    await expect(bl.addMatch(roundId, -12, awayTeamId, stadiumId, startTime)).rejects.toEqual(
+        {
+            "message": Errors.INVALID_PARAMETER,
+            "code": 400
+        })
+
+});
+
+test(`awayTeamId must be a valide number`, async () => {
+    await expect(bl.addMatch(roundId, homeTeamId, -12, stadiumId, startTime)).rejects.toEqual(
+        {
+            "message": Errors.INVALID_PARAMETER,
+            "code": 400
+        })
+
+});
+
+test(`stadiumId must be a valide number`, async () => {
+    await expect(bl.addMatch(roundId, homeTeamId, awayTeamId, -12, startTime)).rejects.toEqual(
+        {
+            "message": Errors.INVALID_PARAMETER,
+            "code": 400
+        })
+
+});
+
+test(`startTime must be a valide string date`, async () => {
+    await expect(bl.addMatch(roundId, homeTeamId, awayTeamId, stadiumId, 'startTime')).rejects.toEqual(
+        {
+            "message": Errors.INVALID_PARAMETER,
+            "code": 400
+        })
+
+});
+
+
+///////////////////////////////////////// TESTS //////////////////////////////////////////////////////////
 
 test(`insert valid match details`, async () => {
     await expect(bl.addMatch(roundId, homeTeamId, awayTeamId, stadiumId, tomorrowDate)).resolves.toBe(1);

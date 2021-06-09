@@ -8,7 +8,11 @@ const TEAM_NOT_FOUND = `Team not found`
 const DIFFERENT_LEAGUES_TEAMS = `Can't have match of teams from different leagues`
 const STADIUM_NOT_FOUND = `Stadium not found`
 const ROUND_NOT_FOUND = `Round not found`
-
+const USER_NOT_LOGGED_IN = `User not logged in`
+const USER_MUST_BE_ADMIN = 'User must be admin'
+const PARAMETER_NULL = 'The parameter is null'
+const WRONG_INSTANCE_OF_PARAMETER = 'Wrong instance of parameter'
+const INVALID_PARAMETER = 'Invalid parameter'
 
 
 exports.TEAM_AGAINST_ITSELFS = TEAM_AGAINST_ITSELFS;
@@ -21,8 +25,11 @@ exports.TEAM_NOT_FOUND = TEAM_NOT_FOUND;
 exports.DIFFERENT_LEAGUES_TEAMS = DIFFERENT_LEAGUES_TEAMS;
 exports.STADIUM_NOT_FOUND = STADIUM_NOT_FOUND
 exports.ROUND_NOT_FOUND = ROUND_NOT_FOUND
-
-
+exports.USER_NOT_LOGGED_IN = USER_NOT_LOGGED_IN
+exports.USER_MUST_BE_ADMIN = USER_MUST_BE_ADMIN
+exports.PARAMETER_NULL = PARAMETER_NULL
+exports.WRONG_INSTANCE_OF_PARAMETER = WRONG_INSTANCE_OF_PARAMETER
+exports.INVALID_PARAMETER = INVALID_PARAMETER
 
 
 
