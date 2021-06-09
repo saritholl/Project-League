@@ -1,15 +1,18 @@
-const roundsDAL = require('../../routes/DAL/roundsDAL');
+const roundsDAL = require('../../../routes/DAL/roundsDAL');
 const roundsDal = new roundsDAL()
 
-test(`return undefined if round doesn't exist`, async () => {
-    await expect(roundsDal.getRoundById(152124)).resolves.toBe(null);
-});
+describe('rounds DAL', () => {
 
-test(`return round if exist`, async () => {
+    test(`return undefined if round doesn't exist`, async () => {
+        await expect(roundsDal.getRoundById(152124)).resolves.toBe(null);
+    });
 
-    const id = 240941
-    await expect(roundsDal.getRoundById(id)).resolves.toEqual(
-        {
-            id
-        });
-});
+    test(`return round if exist`, async () => {
+
+        const id = 240941
+        await expect(roundsDal.getRoundById(id)).resolves.toEqual(
+            {
+                id
+            });
+    });
+})

@@ -21,12 +21,6 @@ beforeEach(async () => {
   await DButils.execQuery(`DELETE FROM dbo.Users`)
 });
 
-afterAll(done => {
-  DButils.closeConnection()
-  done()
-})
-
-
 describe('add match endpoint', () => {
   it('should fail if user is not logged in', async () => {
     const res = await app

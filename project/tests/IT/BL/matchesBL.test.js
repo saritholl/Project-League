@@ -20,29 +20,32 @@ const awayTeamId = 339
 const stadiumId = 5599
 const startTime = (new Date((new Date(new Date().setDate(new Date().getDate() + 1)).setHours(16) - (new Date()).getTimezoneOffset() * 60000))).toISOString().slice(0, -1)
 
-test(`add match`, async () => {
+describe('matches BL', () => {
 
-    const id = await matchesBl.addMatch(
-        roundId,
-        homeTeamId,
-        awayTeamId,
-        stadiumId,
-        startTime
-    )
+    test(`add match`, async () => {
 
-    const db_fixture = await DButils.execQuery(`select * from dbo.Fixtures where id = ${id}`)
-    expect(db_fixture[0]).toEqual(
-        {
-            id,
+        const id = await matchesBl.addMatch(
             roundId,
             homeTeamId,
             awayTeamId,
             stadiumId,
-            startTime,
-            refereeId1: null,
-            refereeId2: null,
-            refereeId3: null,
-            refereeId4: null,
-        }
-    )
-});
+            startTime
+        )
+
+        const db_fixture = await DButils.execQuery(`select * from dbo.Fixtures where id = ${id}`)
+        expect(db_fixture[0]).toEqual(
+            {
+                id,
+                roundId,
+                homeTeamId,
+                awayTeamId,
+                stadiumId,
+                startTime,
+                refereeId1: null,
+                refereeId2: null,
+                refereeId3: null,
+                refereeId4: null,
+            }
+        )
+    });
+})
