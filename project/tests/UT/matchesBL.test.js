@@ -193,7 +193,7 @@ test(`startTime must be a valide string date`, async () => {
 ///////////////////////////////////////// TESTS //////////////////////////////////////////////////////////
 
 test(`insert valid match details`, async () => {
-    await expect(bl.addMatch(roundId, homeTeamId, awayTeamId, stadiumId, tomorrowDate)).resolves.toBe(1);
+    await expect(bl.addMatch(roundId, homeTeamId, awayTeamId, stadiumId, startTime)).resolves.toBe(1);
 
     expect(matchesDal.getMatchById(1)).toEqual(
         {
@@ -202,7 +202,7 @@ test(`insert valid match details`, async () => {
             homeTeamId,
             awayTeamId,
             stadiumId,
-            startTime: tomorrowDate
+            startTime
         }
     )
 });
@@ -215,7 +215,7 @@ test(`can't add match in same day home team already plays`, async () => {
         homeTeamId,
         awayTeamId: randomNumber(),
         stadiumId: randomNumber(),
-        startTime: startTime
+        startTime
     })
 
     await expect(bl.addMatch(roundId, homeTeamId, awayTeamId, stadiumId, tomorrowDate)).rejects.toEqual(
@@ -234,7 +234,7 @@ test(`can't add match in same day away team already plays`, async () => {
         homeTeamId: randomNumber(),
         awayTeamId,
         stadiumId: randomNumber(),
-        startTime: startTime
+        startTime
     })
 
     await expect(bl.addMatch(roundId, homeTeamId, awayTeamId, stadiumId, tomorrowDate)).rejects.toEqual(

@@ -11,7 +11,7 @@ const session = require("client-sessions");
 var logger = require("morgan");
 var cors = require("cors");
 
-var app = express();
+const app = express();
 app.use(logger("dev")); //logger
 app.use(express.json()); // parse application/json
 app.use(
@@ -97,3 +97,5 @@ const server = app.listen(port, () => {
 //     server.close(() => console.log("server closed"));
 //   }
 // });
+
+module.exports = { app };

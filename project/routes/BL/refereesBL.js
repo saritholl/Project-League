@@ -53,7 +53,7 @@ class refereesBL {
       }
     }
 
-    return this.refereesDAL.addReferee({ refereeName, refereeType, refereeStatus })
+    return this.refereesDAL.addReferee({ refereeName: refereeName, refereeType, refereeStatus })
   }
 }
 

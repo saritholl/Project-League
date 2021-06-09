@@ -4,7 +4,7 @@ class refereesDAL {
   async addReferee(referee) {
     await DButils.execQuery(
       `insert into dbo.referees (refereeName,refereeType,refereeStatus)`
-      + ` values ('${referee.refereeName}','${referee.refereeType}',${referee.refereeStatus})`
+      + ` values ('${referee.refereeName}',${referee.refereeType},${referee.refereeStatus})`
     );
   
     const id = await DButils.execQuery(
@@ -27,4 +27,4 @@ class refereesDAL {
   }
 }
 
-exports.refereesDAL = refereesDAL;
+module.exports = refereesDAL

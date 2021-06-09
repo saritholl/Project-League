@@ -22,7 +22,7 @@ router.post("/add", async (req, res, next) => {
           ~~req.body.roundId,
           ~~req.body.homeTeamId,
           ~~req.body.awayTeamId,
-          req.body.refereeId,
+          ~~req.body.stadiumId,
           req.body.startTime,
         );
 
