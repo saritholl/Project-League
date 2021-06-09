@@ -1,6 +1,4 @@
-const { Int } = require("mssql");
 const Errors = require("../../errors");
-
 
 
 class refereesBL {
@@ -8,25 +6,24 @@ class refereesBL {
     this.refereesDAL = refereesDAL
   }
 
-  
 
-  async addReferee(refereeName,refereeType,refereeStatus) {
+  async addReferee(refereeName, refereeType, refereeStatus) {
 
-    if (refereeName == null || refereeType == null || refereeStatus == null ) {
+    if (refereeName == null || refereeType == null || refereeStatus == null) {
       throw {
         "message": Errors.PARAMETER_NULL,
         "code": 404
       }
     }
 
-    if (!(Number.isInteger(refereeType)) || !(Number.isInteger(refereeStatus))  || !(typeof refereeName === 'string')){
+    if (!(Number.isInteger(refereeType)) || !(Number.isInteger(refereeStatus)) || !(typeof refereeName === 'string')) {
       throw {
         "message": Errors.WRONG_INSTANCE_OF_PARAMETER,
         "code": 400
       }
     }
 
-    if (refereeType < 0 || refereeStatus < 0 ) {
+    if (refereeType < 0 || refereeStatus < 0) {
       throw {
         "message": Errors.INVALID_PARAMETER,
         "code": 400
@@ -56,7 +53,7 @@ class refereesBL {
       }
     }
 
-    return this.refereesDAL.addReferee({refereeName,refereeType,refereeStatus})
+    return this.refereesDAL.addReferee({ refereeName, refereeType, refereeStatus })
   }
 }
 

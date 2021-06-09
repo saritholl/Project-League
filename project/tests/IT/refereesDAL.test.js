@@ -1,7 +1,7 @@
 const { expect } = require('@jest/globals');
 const refereesDAL = require('../../routes/DAL/refereesDAL');
 const DButils = require("../../routes/utils/DButils");
-const refereesDAL = new refereesDAL()
+const refereesDal = new refereesDAL()
 
 beforeEach(async () => {
     await DButils.execQuery(`DELETE FROM dbo.Referees`)
@@ -53,7 +53,7 @@ test(`return referee name by id`, async () => {
          VALUES ('${"sarit hollander"}', ${refereeType} , ${refereeStatus})`
     )
 
-    const db_referees = await refereesDAL.getRefereesById(refereeId)
+    const db_referees = await refereesDal.getRefereesById(refereeId)
     expect(db_referees.refereeName).toBe("alon yefet")
 });
 
@@ -74,7 +74,7 @@ test(`return referee type by id`, async () => {
          VALUES ('${"sarit hollander"}', ${refereeType} , ${refereeStatus})`
     )
 
-    const db_referees = await refereesDAL.getRefereesById(refereeId)
+    const db_referees = await refereesDal.getRefereesById(refereeId)
     expect(db_referees.refereeName).toBe("0")
 });
 
@@ -96,7 +96,7 @@ test(`return referee status by id`, async () => {
          VALUES (  '${"sarit hollander"}', ${refereeType} , ${refereeStatus})`
     )
 
-    const db_referees = await refereesDAL.getRefereesById(refereeId)
+    const db_referees = await refereesDal.getRefereesById(refereeId)
     expect(db_referees.refereeStatus).toBe("1")
 });
 
@@ -117,6 +117,6 @@ test(`delete referee by id`, async () => {
          VALUES (  '${"sarit hollander"}', ${refereeType} , ${refereeStatus})`
     )
 
-    const db_referees = await refereesDAL.deleteRefereeById(refereeId)
+    const db_referees = await refereesDal.deleteRefereeById(refereeId)
     expect(db_referees).toBeTruthy() // delete sql returns true if operation succssedd
 });

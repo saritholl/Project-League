@@ -4,7 +4,7 @@ const refereesDAL = require('../../routes/DAL/refereesDAL');
 
 const refereesBL = require('../../routes/BL/refereesBL');
 const DButils = require("../../routes/utils/DButils");
-const refereesBL = new refereesBL(new refereesDAL())
+const refereesBl = new refereesBL(new refereesDAL())
 
 beforeEach(async () => {
     await DButils.execQuery(`DELETE FROM dbo.Referees`)
@@ -16,7 +16,7 @@ const refereesStatus = 0 // init by default to 0 when added.
 
 test(`add referee`, async () => {
 
-    const id = await refereesBL.addReferee(
+    const id = await refereesBl.addReferee(
         refereeName,
         refereesType,
         refereesStatus,
