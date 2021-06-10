@@ -12,18 +12,20 @@ router.post("/addReferee", async (req, res, next) => {
     }
     const user = (
     await DButils.execQuery(
-        `SELECT * FROM dbo.users WHERE username = '${req.session.user_id}'`
+        `SELECT * FROM dbo.UsersTable WHERE UserName = '${req.session.user_id}'`
     )
     )[0];
-    if(user.is_admin === 0)
+    if(!(user.UserRole == "ADMIN"))
     {
     throw { status: 403, message: "no premission to do the following" };
     }
     
-    let referee_id = req.body.referee_id;
-    let referee_name = req.body.referee_name;
-    await DButils.execQuery(`INSERT INTO dbo.referees (referee_id,referee_name)
-     , ${home_team_id}, '${referee_name}')`
+    let refereeName = req.body.refereeName;
+    let refereeType = req.body.refereeType;
+    let refereeStatus = req.body.refereeStatus;
+
+    await DButils.execQuery(`INSERT INTO dbo.Referees (refereeName,refereeType,refereeStatus)
+    VALUES ('${refereeName}', ${refereeType}, ${refereeStatus})`
     );
     res.status(201).send('referee was added and created succsessfully');
   } catch (error) {

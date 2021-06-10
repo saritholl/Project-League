@@ -29,5 +29,10 @@
   "bugs": {
     "url": "https://github.com/saritholl/Project-League/issues"
   },
-  "homepage": "https://github.com/saritholl/Project-League#readme"
+  "homepage": "https://github.com/saritholl/Project-League#readme",
+  "jest": {
+    "setupFiles": [
+      "./project/tests/env.js"
+    ]
+  }
 }

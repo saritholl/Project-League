@@ -52,6 +52,7 @@ const users = require("./routes/users");
 const league = require("./routes/league");
 const teams = require("./routes/teams");
 const matches = require("./routes/matches");
+const referees = require("./routes/referees");
 
 
 //#endregion
@@ -64,16 +65,18 @@ app.use("/users", users);
 app.use("/league", league);
 app.use("/teams", teams);
 app.use("/matches", matches);
+app.use("/referees", referees);
+
 app.use(auth);
 
 app.use(function (err, req, res, next) {
-  console.error(err);
+  // console.error(err);
   res.status(err.status || 500).send(err.message);
 });
 
-const server = app.listen(port, () => {
-  console.log(`Server listen on port ${port}`);
-});
+// const server = app.listen(port, () => {
+//   console.log(`Server listen on port ${port}`);
+// });
 
 // process.on("SIGINT", function () {
 //   if (server) {
@@ -81,4 +84,4 @@ const server = app.listen(port, () => {
 //   }
 // });
 
-module.exports = { app };
+module.exports =  app ;
