@@ -14,7 +14,7 @@ jest.setTimeout(60000);
 var testSession = null;
 beforeEach(function () {
   
-  testSession = session(main);
+  testSession = session(main.app);
 });
 
 // LOGIN TEST
