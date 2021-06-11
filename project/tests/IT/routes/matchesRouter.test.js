@@ -19,7 +19,8 @@ beforeEach(async () => {
 });
 
 describe('add match endpoint', () => {
-  it('should fail if user is not logged in', async () => {
+
+  it(' match should fail if user is not logged in', async () => {
     const res = await app
       .post('/matches/add')
       .send({
