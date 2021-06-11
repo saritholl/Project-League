@@ -206,7 +206,7 @@ describe('referees BL UT - set refs', () => {
             })
     });
 
-    test(`set refs: ref 4 already have a match this day`, async () => {
+    test(`set refs: ref 3 already have a match this day`, async () => {
 
         matchesDal.givenMatch({
             id: 1241,
