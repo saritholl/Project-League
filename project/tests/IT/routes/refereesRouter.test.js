@@ -1,114 +1,100 @@
-
 const request = require('supertest')
-var session = require('supertest-session');
-var express = require("express");
-const DBUtills=require("../../../routes/utils/DButils");
-var app = express();
-const referees = require("../../../routes/referees");
-app.use("/referees", referees);
+const Errors = require("../../../errors");
+const DButils = require("../../../routes/utils/DButils");
+
 const main = require('../../../main');
+var app = request.agent(main.app);
 
-jest.setTimeout(60000);
-// var testSession = session(app, {
+require('dotenv').config();
 
-var testSession = null;
-beforeEach(function () {
-  
-  testSession = session(main.app);
+const roundId = 240941
+const homeTeamId = 180
+const awayTeamId = 339
+const stadiumId = 5599
+const startTime = (new Date((new Date(new Date().setDate(new Date().getDate() + 1)).setHours(16) - (new Date()).getTimezoneOffset() * 60000))).toISOString().slice(0, -1)
+const refereeName = 'Sarit'
+const refereeRole = 'MAIN'
+
+// TODO: add, delete, set
+beforeEach(async () => {
+  await DButils.execQuery(`DELETE FROM dbo.Referees`)
+  await DButils.execQuery(`DELETE FROM dbo.Fixtures`)
+  await DButils.execQuery(`DELETE FROM dbo.Users`)
 });
 
-// LOGIN TEST
-describe('add referee endpoint', () => {
-  test('should fail if user is not logged in', async () => {
-    const response = await testSession.post('/referees/addReferee')
-    .send({
-      "refereeName": "tom dugma",
-      "refereeType": 1,
-      "refereeStatus":0
-    })
-
-    expect(response.statusCode).toBe(401)
-    await DBUtills.execQuery(`delete from dbo.Referees`);
-    // expect(response.text).toBe(Errors.USER_NOT_LOGGED_IN)
-  })
-})
-
-// ADD REFEREE TEST
-describe('add referee endpoint', () => {
-  test('succsesful login and adding referee', async () => {
-    const response = await testSession.post('/Login')
-    .send({
-      "UserName":"tom dugma",
-      "password": "123456"
-    })
-    // succssefull login
-    expect(response.statusCode).toBe(200)
-
-    const adding_referee = await testSession.post('/referees/addReferee')
-    .send({
-      "refereeName": "sarit hollander",
-      "refereeType": 1,
-      "refereeStatus":0
-    })
-    
-    expect(adding_referee.statusCode).toBe(201)
-    
-    await DBUtills.execQuery(`delete from dbo.Referees where refereeName  ='sarit hollander'`);
-
-  })
-
-  // ADD REFEREE TEST
-describe('add referee and check count of table', () => {
-  test('succsesful login and adding referee', async () => {
-    const response = await testSession.post('/Login')
-    .send({
-      "UserName":"tom dugma",
-      "password": "123456"
-    })
-    // succssefull login
-    expect(response.statusCode).toBe(200)
-    const adding_referee = await testSession.post('/referees/addReferee')
-    .send({
-    
-      "refereeName": "Ayalon Keves",
-      "refereeType": 1,
-      "refereeStatus":0
-    })
-    
-    expect(adding_referee.statusCode).toBe(201)
-    // expect(adding_referee.body.message).toBe("referee was added and created succsessfully");
-    let count = await DBUtills.execQuery(`select count(*) as referees from dbo.Referees`);
-    // excpeted 3 referees, tom sarit and ayalon
-    expect(count[0].referees).toBe(1)
-
-    // delete all referees
-    await DBUtills.execQuery(`delete from dbo.Referees`);
-    let after_count = await DBUtills.execQuery(`select count(*) as referees from dbo.Referees`);
-    expect(after_count[0].referees).toBe(0)
-
-  })
-})
-
-  describe('add referee', () => {
-    test('should fail because user is not admin', async () => {
-      const response = await testSession.post('/Login').send({
-        "UserName":"Ayalon Keves",
-        "password": "11111"
-      })
-      // succssefull login
-      expect(response.statusCode).toBe(200)
-      const adding_referee = await testSession.post('/referees/addReferee')
+describe('add ref endpoint', () => {
+  it('should fail if user is not logged in', async () => {
+    const res = await app
+      .post('/referees/add')
       .send({
-        "refereeName": "sarit hollander",
-        "refereeType": 1,
-        "refereeStatus":0
+        refereeName,
+        refereeRole,
       })
-      // should fail to add because Ayalon is not an admin
-      expect(adding_referee.statusCode).toBe(403)
+
+    expect(res.statusCode).toBe(403)
+    expect(res.text).toBe(Errors.USER_NOT_LOGGED_IN)
+  })
+
+  it(`should fail for invalid user id`, async () => {
+
+    const res = await app
+      .post('/referees/add')
+      .set({ 'user_id': 54645 })
+      .send({
+        refereeName,
+        refereeRole,
       })
+
+    expect(res.statusCode).toBe(403)
+    expect(res.text).toBe(Errors.USER_NOT_LOGGED_IN)
+  })
+
+  it(`should fail if user is not admin`, async () => {
+
+    await DButils.execQuery(`insert into dbo.Users (UserName, UserRole) values ('Sarit', 'User')`)
+
+    const db_id = await DButils.execQuery(
+      `select @@identity`
+    );
+
+    const res = await app
+      .post('/referees/add')
+      .set({ 'user_id': db_id[0][''] })
+      .send({
+        refereeName,
+        refereeRole,
+      })
+
+    expect(res.statusCode).toBe(403)
+    expect(res.text).toBe(Errors.USER_MUST_BE_ADMIN)
+  })
+
+  it(`should add ref if user is an admin`, async () => {
+
+    await DButils.execQuery(`insert into dbo.Users (UserName, UserRole) values ('Sarit', 'ADMIN')`)
+
+    const user_db_id = await DButils.execQuery(
+      `select @@identity`
+    );
+
+    const res = await app
+      .post('/referees/add')
+      .set({ 'user_id': user_db_id[0][''] })
+      .send({
+        refereeName,
+        refereeRole,
+      })
+
+    expect(res.statusCode).toBe(201)
+
+    const ref_db_id = await DButils.execQuery(
+      `select @@identity`
+    );
+
+    expect(res.body).toEqual({
+      id: ref_db_id[0][''],
+      refereeName,
+      refereeRole,
     })
-  
-
-
-
+  })
 })

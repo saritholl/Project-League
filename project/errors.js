@@ -1,14 +1,11 @@
 const PAST_TIME = `Can't have a match on a past time`
-const REFEREE_NOT_FOUND = `Referee not found`
 const TEAM_NOT_FOUND = `Team not found`
 const DIFFERENT_LEAGUES_TEAMS = `Can't have match of teams from different leagues`
-const NO_MAIN_REFEREE = `Can't have match without main referee`
-const REFEREE_ALREADY_SET_IN_THIS_MATCH = `Referee already set in this game`
 const STADIUM_NOT_FOUND = `Stadium not found`
 const ROUND_NOT_FOUND = `Round not found`
-const REFEREE_ALREADY_SET_TO_MATCH_THIS_DAY = `Referee already set to a match on this day`
 const INVALID_REFEREE_NAME = `referee name must contain first name and last name, seperated by 1 space, for example: AAAAA BBBBB`
 const REFEREE_NAME_NOT_FOUND = `Referee name wasnt found`
+const INVALID_REFEREE_ROLE = `Referee role must be MAIN/ASSISTANT`
 const REFEREE_TYPE_NOT_LEGAL = 'Referee type must be either 1 or 0'
 const REFEREE_NAME_ALREADY_EXISTS = 'Referee name aleardy exists'
 const TEAM_AGAINST_ITSELFS = `Can't have a team play against itselfs`
@@ -21,7 +18,10 @@ const USER_MUST_BE_ADMIN = 'User must be admin'
 const PARAMETER_NULL = 'The parameter is null'
 const WRONG_INSTANCE_OF_PARAMETER = 'Wrong instance of parameter'
 const INVALID_PARAMETER = 'Invalid parameter'
-
+const REFEREE_NOT_FOUND = `Referee not found`
+const NO_MAIN_REFEREE = `Can't have match without main referee`
+const DUPLICATE_REFEREE = `Referee already set in this game`
+const REFEREE_ALREADY_SET_TO_MATCH_THIS_DAY = `Referee already set to a match on this day`
 
 exports.TEAM_AGAINST_ITSELFS = TEAM_AGAINST_ITSELFS;
 exports.TEAM_ALREADY_PLAYS_THIS_DAY = TEAM_ALREADY_PLAYS_THIS_DAY;
@@ -31,8 +31,6 @@ exports.MATCH_ALREADY_EXISTS = MATCH_ALREADY_EXISTS;
 exports.TEAM_ALREADY_PLAYED_THIS_ROUND = TEAM_ALREADY_PLAYED_THIS_ROUND;
 exports.REFEREE_NOT_FOUND = REFEREE_NOT_FOUND;
 exports.NO_MAIN_REFEREE = NO_MAIN_REFEREE
-exports.REFEREE_ALREADY_SET_IN_THIS_MATCH = REFEREE_ALREADY_SET_IN_THIS_MATCH
-exports.REFEREE_ALREADY_SET_TO_MATCH_THIS_DAY = REFEREE_ALREADY_SET_TO_MATCH_THIS_DAY
 exports.INVALID_REFEREE_NAME = INVALID_REFEREE_NAME
 exports.REFEREE_NAME_NOT_FOUND = REFEREE_NAME_NOT_FOUND
 exports.REFEREE_TYPE_NOT_LEGAL = REFEREE_TYPE_NOT_LEGAL
@@ -46,5 +44,7 @@ exports.USER_MUST_BE_ADMIN = USER_MUST_BE_ADMIN
 exports.PARAMETER_NULL = PARAMETER_NULL
 exports.WRONG_INSTANCE_OF_PARAMETER = WRONG_INSTANCE_OF_PARAMETER
 exports.INVALID_PARAMETER = INVALID_PARAMETER
-
-
+exports.DUPLICATE_REFEREE = DUPLICATE_REFEREE
+exports.REFEREE_NOT_FOUND = REFEREE_NOT_FOUND;
+exports.REFEREE_ALREADY_SET_TO_MATCH_THIS_DAY = REFEREE_ALREADY_SET_TO_MATCH_THIS_DAY
+exports.INVALID_REFEREE_ROLE = INVALID_REFEREE_ROLE

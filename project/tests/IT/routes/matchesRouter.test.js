@@ -1,12 +1,9 @@
 const request = require('supertest')
-var session = require('supertest-session');
 const Errors = require("../../../errors");
 const DButils = require("../../../routes/utils/DButils");
 
 const main = require('../../../main');
 var app = request.agent(main.app);
-
-jest.setTimeout(5000);
 
 require('dotenv').config();
 
