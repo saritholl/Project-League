@@ -45,7 +45,7 @@ router.post("/deleteReferee", async (req, res, next) => {
           `SELECT * FROM dbo.users WHERE username = '${req.session.user_id}'`
       )
       )[0];
-      if(user.is_admin === 0)
+      if(!(user.UserRole == 'ADMIN'))
       {
       throw { status: 403, message: "no premission to do the following" };
       }
