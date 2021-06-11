@@ -20,7 +20,7 @@
     "jest": "^27.0.4"
   },
   "scripts": {
-    "test": "jest --runInBand --config ./jest.config.json --detectOpenHandles --no-cache"
+    "test": "jest --runInBand --config ./jest.config.json --no-cache"
   },
   "repository": {
     "type": "git",

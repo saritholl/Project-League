@@ -25,16 +25,16 @@ class stubRefereesDAL {
   givenMainReferee(id) {
     this.referees.push({
       id,
-      RefereeName: 'Yossi',
-      RefereeRole: 'MAIN'
+      refereeName: 'Yossi',
+      refereeRole: 'MAIN'
     })
   }
 
   givenAssitantReferee(id) {
     this.referees.push({
       id,
-      RefereeName: 'Dan',
-      RefereeRole: 'ASSITANT'
+      refereeName: 'Dan',
+      refereeRole: 'ASSITANT'
     })
   }
 
