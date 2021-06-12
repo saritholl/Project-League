@@ -40,7 +40,7 @@ describe('POST /login', function () {
         expect(res.statusCode).toBe(401);
     })
 
-    test("Unsuccessful login - not doesn't exist", async () => {
+    test("Unsuccessful login - user doesn't exist", async () => {
         const res = await app.post("/login").send({
             userName: 'sarit',
             userPassword
