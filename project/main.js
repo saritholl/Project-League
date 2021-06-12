@@ -17,7 +17,8 @@ app.use(express.json()); // parse application/json
 app.use(
   session({
     cookieName: "session", // the cookie key name
-    secret: process.env.COOKIE_SECRET, // the encryption key
+    secret: `gonend`, 
+    //process.env.COOKIE_SECRET, // the encryption key
     duration: 24 * 60 * 60 * 1000, // expired after 20 sec
     activeDuration: 1000 * 60 * 5, // if expiresIn < activeDuration,
     cookie: {
