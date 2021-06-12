@@ -17,7 +17,7 @@ app.use(express.json()); // parse application/json
 app.use(
   session({
     cookieName: "session", // the cookie key name
-    secret: process.env.COOKIE_SECRET, // the encryption key
+    secret: process.env.COOKIE_SECRET,
     duration: 24 * 60 * 60 * 1000, // expired after 20 sec
     activeDuration: 1000 * 60 * 5, // if expiresIn < activeDuration,
     cookie: {
@@ -48,9 +48,6 @@ app.options("*", cors(corsConfig));
 const port = process.env.PORT || "3000";
 
 const auth = require("./routes/auth");
-const users = require("./routes/users");
-const league = require("./routes/league");
-const teams = require("./routes/teams");
 const matches = require("./routes/matches");
 const referees = require("./routes/referees");
 
@@ -61,9 +58,6 @@ const referees = require("./routes/referees");
 app.get("/alive", (req, res) => res.send("I'm alive"));
 
 // Routings
-app.use("/users", users);
-app.use("/league", league);
-app.use("/teams", teams);
 app.use("/matches", matches);
 app.use("/referees", referees);
 

@@ -19,7 +19,7 @@ router.post("/add", async (req, res, next) => {
 
     if (user.length == 0) {
       res.status(403).send(Errors.USER_NOT_LOGGED_IN)
-    } else if (user[0].UserRole != "ADMIN") {
+    } else if (user[0].userRole != "ADMIN") {
       res.status(403).send(Errors.USER_MUST_BE_ADMIN)
     } else {
       try {

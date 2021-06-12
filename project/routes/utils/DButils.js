@@ -1,13 +1,12 @@
 require("dotenv").config();
 const sql = require("mssql");
 
+// TODO:
 const config = {
   user: process.env.tedious_userName,
   password: process.env.tedious_password,
   server: process.env.tedious_server,
-  // TODO:
-  // database: process.env.tedious_database,
-  database: 'football-management-group',
+  database: process.env.tedious_database,
   options: {
     encrypt: true,
     enableArithAbort: true

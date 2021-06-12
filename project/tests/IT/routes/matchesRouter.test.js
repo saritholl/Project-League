@@ -5,8 +5,6 @@ const DButils = require("../../../routes/utils/DButils");
 const main = require('../../../main');
 var app = request.agent(main.app);
 
-require('dotenv').config();
-
 const roundId = 240941
 const homeTeamId = 339
 const awayTeamId = 180
@@ -54,7 +52,7 @@ describe('add match endpoint', () => {
 
   it(`should fail if user is not admin`, async () => {
 
-    await DButils.execQuery(`insert into dbo.Users (UserName, UserRole) values ('Sarit', 'User')`)
+    await DButils.execQuery(`insert into dbo.Users (userPassword, userName, userRole) values ('pass', 'Sarit', 'User')`)
 
     const db_id = await DButils.execQuery(
       `select @@identity`
@@ -77,7 +75,7 @@ describe('add match endpoint', () => {
 
   it(`should create match if user is an admin`, async () => {
 
-    await DButils.execQuery(`insert into dbo.Users (UserName, UserRole) values ('Sarit', 'ADMIN')`)
+    await DButils.execQuery(`insert into dbo.Users (userPassword, userName, userRole) values ('pass', 'Sarit', 'ADMIN')`)
 
     const user_db_id = await DButils.execQuery(
       `select @@identity`

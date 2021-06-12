@@ -5,14 +5,11 @@ const DButils = require("../../../routes/utils/DButils");
 const main = require('../../../main');
 var app = request.agent(main.app);
 
-require('dotenv').config();
-
 const matchId = 180
 const startTime = (new Date((new Date(new Date().setDate(new Date().getDate() + 1)).setHours(16) - (new Date()).getTimezoneOffset() * 60000))).toISOString().slice(0, -1)
 const refereeName = 'Sarit'
 const refereeRole = 'MAIN'
 
-// TODO: add, delete, set
 beforeEach(async () => {
   await DButils.execQuery(`DELETE FROM dbo.Referees`)
   await DButils.execQuery(`DELETE FROM dbo.Fixtures`)
@@ -48,7 +45,7 @@ describe('add ref endpoint', () => {
 
   it(`should fail if user is not admin`, async () => {
 
-    await DButils.execQuery(`insert into dbo.Users (UserName, UserRole) values ('Sarit', 'User')`)
+    await DButils.execQuery(`insert into dbo.Users (userPassword, userName, userRole) values ('pass', 'Sarit', 'User')`)
 
     const db_id = await DButils.execQuery(
       `select @@identity`
@@ -68,7 +65,7 @@ describe('add ref endpoint', () => {
 
   it(`should add ref if user is an admin`, async () => {
 
-    await DButils.execQuery(`insert into dbo.Users (UserName, UserRole) values ('Sarit', 'ADMIN')`)
+    await DButils.execQuery(`insert into dbo.Users (userPassword, userName, userRole) values ('pass', 'Sarit', 'ADMIN')`)
 
     const user_db_id = await DButils.execQuery(
       `select @@identity`
@@ -127,7 +124,7 @@ describe('delete ref endpoint', () => {
 
   it(`should fail if user is not admin`, async () => {
 
-    await DButils.execQuery(`insert into dbo.Users (UserName, UserRole) values ('Sarit', 'User')`)
+    await DButils.execQuery(`insert into dbo.Users (userPassword, userName, userRole) values ('pass', 'Sarit', 'User')`)
 
     const db_id = await DButils.execQuery(
       `select @@identity`
@@ -145,7 +142,7 @@ describe('delete ref endpoint', () => {
 
   it(`should delete ref if user is an admin`, async () => {
 
-    await DButils.execQuery(`insert into dbo.Users (UserName, UserRole) values ('Sarit', 'ADMIN')`)
+    await DButils.execQuery(`insert into dbo.Users (userPassword, userName, userRole) values ('pass', 'Sarit', 'ADMIN')`)
 
     const user_db_id = await DButils.execQuery(
       `select @@identity`
@@ -211,7 +208,7 @@ describe('set refs endpoint', () => {
 
   it(`should fail if user is not admin`, async () => {
 
-    await DButils.execQuery(`insert into dbo.Users (UserName, UserRole) values ('Sarit', 'User')`)
+    await DButils.execQuery(`insert into dbo.Users (userPassword, userName, userRole) values ('pass', 'Sarit', 'User')`)
 
     const db_id = await DButils.execQuery(
       `select @@identity`
@@ -233,7 +230,7 @@ describe('set refs endpoint', () => {
 
   it(`should set refs if user is an admin`, async () => {
 
-    await DButils.execQuery(`insert into dbo.Users (UserName, UserRole) values ('Sarit', 'ADMIN')`)
+    await DButils.execQuery(`insert into dbo.Users (userPassword, userName, userRole) values ('pass', 'Sarit', 'ADMIN')`)
 
     const user_db_id = await DButils.execQuery(
       `select @@identity`

@@ -5,8 +5,9 @@
 -- CREATE TABLE dbo.Users
 -- (
 --     id INT IDENTITY(1,1) NOT NULL PRIMARY KEY, -- primary key column
---     UserName VARCHAR(255),
---     UserRole VARCHAR(255),
+--     userPassword VARCHAR(255) NOT NULL,
+--     userName VARCHAR(255),
+--     userRole VARCHAR(255),
 -- );
 -- GO
 
@@ -14,4 +15,4 @@ SELECT *
 FROM dbo.Users
 GO
 
--- insert into dbo.Users (UserName, UserRole) values ('Sarit', 'User')
+-- insert into dbo.Users (userPassword, userName, userRole) values ('password', 'Sarit', 'User')
