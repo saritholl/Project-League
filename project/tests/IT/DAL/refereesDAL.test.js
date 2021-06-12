@@ -1,4 +1,3 @@
-const { expect } = require('@jest/globals');
 const refereesDAL = require('../../../routes/DAL/refereesDAL');
 const DButils = require("../../../routes/utils/DButils");
 const refereesDal = new refereesDAL()
@@ -7,118 +6,47 @@ beforeEach(async () => {
     await DButils.execQuery(`DELETE FROM dbo.Referees`)
 });
 
-const refereeName = "alon yefet"
-const refereeType = 1 // 1 - main referee, 0 - "referee assistent"
-const refereeStatus = 0  //on defualt referee status equal to zero when added to database. 0 - referee isnt set to game, 1 - referee is "occupy"
+const refereeName = Math.random().toString(36).substring(7)
+const refereeRole = 'MAIN'
 
-describe('refereees DAL', () => {
-    test(`add referee`, async () => {
+describe('referees DAL', () => {
+    test(`return undefined if referee doesn't exist`, async () => {
+        await expect(refereesDal.getRefereeById(152124)).resolves.toBe(null);
+    });
 
-        const id = await refereesDal.addReferee({
-            refereeName,
-            refereeType,
-            refereeStatus,
-        })
+    test(`return referee if exist`, async () => {
+
+        await DButils.execQuery(`
+        INSERT INTO dbo.Referees ([refereeName],[refereeRole]) VALUES ( '${refereeName}', '${refereeRole}')`
+        )
 
         const db_id = await DButils.execQuery(
             `select @@identity`
         );
 
-        expect(id).toBe(db_id[0][''])
+        const id = db_id[0]['']
 
-
-        const db_referees = await DButils.execQuery(`select * from dbo.Referees where refereeId = ${id}`)
-        expect(db_referees[0]).toEqual(
+        await expect(refereesDal.getRefereeById(id)).resolves.toEqual(
             {
+                id,
                 refereeName,
-                refereeType,
-                refereeStatus,
-            }
-        )
+                refereeRole
+            });
     });
 
-    test(`return referee name by id`, async () => {
+    test(`add referee and delete`, async () => {
+        const ref_id = await refereesDal.addReferee({ refereeName, refereeRole })
 
-        await DButils.execQuery(`
-        INSERT INTO dbo.Referees (roundId,homeTeamId,awayTeamId,stadiumId,startTime)
-         VALUES ( '${refereeName}', ${refereeType} , ${refereeStatus})`
-        )
+        await expect(refereesDal.getRefereeById(ref_id)).resolves.toEqual(
+            {
+                id: ref_id,
+                refereeName,
+                refereeRole
+            });
 
-        await DButils.execQuery(`
-        INSERT INTO dbo.Referees (roundId,homeTeamId,awayTeamId,stadiumId,startTime)
-         VALUES ( '${"tom dugma"}', ${refereeType} , ${refereeStatus})`
-        )
+        await refereesDal.deleteRefereeById(ref_id)
 
-        await DButils.execQuery(`
-        INSERT INTO dbo.Referees (roundId,homeTeamId,awayTeamId,stadiumId,startTime)
-         VALUES ('${"sarit hollander"}', ${refereeType} , ${refereeStatus})`
-        )
-
-        const db_referees = await refereesDal.getRefereesById(refereeId)
-        expect(db_referees.refereeName).toBe("alon yefet")
+        await expect(refereesDal.getRefereeById(ref_id)).resolves.toBe(null);
     });
 
-    test(`return referee type by id`, async () => {
-
-        await DButils.execQuery(`
-        INSERT INTO dbo.Referees (roundId,homeTeamId,awayTeamId,stadiumId,startTime)
-         VALUES ( '${refereeName}', ${0} , ${refereeStatus})`
-        )
-
-        await DButils.execQuery(`
-        INSERT INTO dbo.Referees (roundId,homeTeamId,awayTeamId,stadiumId,startTime)
-         VALUES ( '${"tom dugma"}', ${refereeType} , ${refereeStatus})`
-        )
-
-        await DButils.execQuery(`
-        INSERT INTO dbo.Referees (roundId,homeTeamId,awayTeamId,stadiumId,startTime)
-         VALUES ('${"sarit hollander"}', ${refereeType} , ${refereeStatus})`
-        )
-
-        const db_referees = await refereesDal.getRefereesById(refereeId)
-        expect(db_referees.refereeName).toBe("0")
-    });
-
-
-    test(`return referee status by id`, async () => {
-
-        await DButils.execQuery(`
-        INSERT INTO dbo.Referees (roundId,homeTeamId,awayTeamId,stadiumId,startTime)
-         VALUES (  '${refereeName}', ${refereeType} , ${1})`
-        )
-
-        await DButils.execQuery(`
-        INSERT INTO dbo.Referees (roundId,homeTeamId,awayTeamId,stadiumId,startTime)
-         VALUES ( '${"tom dugma"}', ${refereeType} , ${refereeStatus})`
-        )
-
-        await DButils.execQuery(`
-        INSERT INTO dbo.Referees (roundId,homeTeamId,awayTeamId,stadiumId,startTime)
-         VALUES (  '${"sarit hollander"}', ${refereeType} , ${refereeStatus})`
-        )
-
-        const db_referees = await refereesDal.getRefereesById(refereeId)
-        expect(db_referees.refereeStatus).toBe("1")
-    });
-
-    test(`delete referee by id`, async () => {
-
-        await DButils.execQuery(`
-        INSERT INTO dbo.Referees (roundId,homeTeamId,awayTeamId,stadiumId,startTime)
-         VALUES (  '${refereeName}', ${refereeType} , ${1})`
-        )
-
-        await DButils.execQuery(`
-        INSERT INTO dbo.Referees (roundId,homeTeamId,awayTeamId,stadiumId,startTime)
-         VALUES ( '${"tom dugma"}', ${refereeType} , ${refereeStatus})`
-        )
-
-        await DButils.execQuery(`
-        INSERT INTO dbo.Referees (roundId,homeTeamId,awayTeamId,stadiumId,startTime)
-         VALUES (  '${"sarit hollander"}', ${refereeType} , ${refereeStatus})`
-        )
-
-        const db_referees = await refereesDal.deleteRefereeById(refereeId)
-        expect(db_referees).toBeTruthy() // delete sql returns true if operation succssedd
-    });
 })

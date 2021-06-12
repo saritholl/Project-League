@@ -1,9 +1,9 @@
-const matchesBL = require('../../routes/BL/matchesBL');
-const stubMatchesDAL = require('./stubs/stubMatchesDAL');
-const stubTeamsDAL = require('./stubs/stubTeamsDAL');
-const stubStadiumsDAL = require('./stubs/stubStadiumsDAL');
-const stubRoundsDAL = require('./stubs/stubRoundsDAL');
-const Errors = require("../../errors");
+const matchesBL = require('../../../routes/BL/matchesBL');
+const stubMatchesDAL = require('../stubs/stubMatchesDAL');
+const stubTeamsDAL = require('../stubs/stubTeamsDAL');
+const stubStadiumsDAL = require('../stubs/stubStadiumsDAL');
+const stubRoundsDAL = require('../stubs/stubRoundsDAL');
+const Errors = require("../../../errors");
 
 
 const matchesDal = new stubMatchesDAL()
@@ -56,7 +56,7 @@ describe('matches BL UT', () => {
         await expect(bl.addMatch(null, homeTeamId, awayTeamId, stadiumId, startTime)).rejects.toEqual(
             {
                 "message": Errors.PARAMETER_NULL,
-                "code": 404
+                "code": 400
             })
 
     });
@@ -65,7 +65,7 @@ describe('matches BL UT', () => {
         await expect(bl.addMatch(roundId, null, awayTeamId, stadiumId, startTime)).rejects.toEqual(
             {
                 "message": Errors.PARAMETER_NULL,
-                "code": 404
+                "code": 400
             })
 
     });
@@ -74,7 +74,7 @@ describe('matches BL UT', () => {
         await expect(bl.addMatch(roundId, homeTeamId, null, stadiumId, startTime)).rejects.toEqual(
             {
                 "message": Errors.PARAMETER_NULL,
-                "code": 404
+                "code": 400
             })
 
     });
@@ -83,7 +83,7 @@ describe('matches BL UT', () => {
         await expect(bl.addMatch(roundId, homeTeamId, awayTeamId, null, startTime)).rejects.toEqual(
             {
                 "message": Errors.PARAMETER_NULL,
-                "code": 404
+                "code": 400
             })
 
     });
@@ -92,7 +92,7 @@ describe('matches BL UT', () => {
         await expect(bl.addMatch(roundId, homeTeamId, awayTeamId, stadiumId, null)).rejects.toEqual(
             {
                 "message": Errors.PARAMETER_NULL,
-                "code": 404
+                "code": 400
             })
 
     });
@@ -195,7 +195,7 @@ describe('matches BL UT', () => {
 
     ///////////////////////////////////////// TESTS //////////////////////////////////////////////////////////
 
-    test(`insert valid match details`, async () => {
+    test(`add valid match details`, async () => {
         await expect(bl.addMatch(roundId, homeTeamId, awayTeamId, stadiumId, startTime)).resolves.toBe(1);
 
         expect(matchesDal.getMatchById(1)).toEqual(

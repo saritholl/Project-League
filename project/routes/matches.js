@@ -19,17 +19,16 @@ router.post("/add", async (req, res, next) => {
 
     if (user.length == 0) {
       res.status(403).send(Errors.USER_NOT_LOGGED_IN)
-    } else if (user[0].UserRole != "ADMIN") {
+    } else if (user[0].userRole != "ADMIN") {
       res.status(403).send(Errors.USER_MUST_BE_ADMIN)
     } else {
-
-      const roundId = ~~req.body.roundId
-      const homeTeamId = ~~req.body.homeTeamId
-      const awayTeamId = ~~req.body.awayTeamId
-      const stadiumId = ~~req.body.stadiumId
-      const startTime = req.body.startTime
-
       try {
+        const roundId = ~~req.body.roundId
+        const homeTeamId = ~~req.body.homeTeamId
+        const awayTeamId = ~~req.body.awayTeamId
+        const stadiumId = ~~req.body.stadiumId
+        const startTime = req.body.startTime
+
         matchId = await matches_utils.addMatch(
           roundId,
           homeTeamId,

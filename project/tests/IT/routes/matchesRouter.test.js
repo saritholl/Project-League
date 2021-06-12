@@ -1,14 +1,9 @@
 const request = require('supertest')
-var session = require('supertest-session');
 const Errors = require("../../../errors");
 const DButils = require("../../../routes/utils/DButils");
 
 const main = require('../../../main');
 var app = request.agent(main.app);
-
-jest.setTimeout(5000);
-
-require('dotenv').config();
 
 const roundId = 240941
 const homeTeamId = 339
@@ -22,7 +17,8 @@ beforeEach(async () => {
 });
 
 describe('add match endpoint', () => {
-  it('should fail if user is not logged in', async () => {
+
+  it(' match should fail if user is not logged in', async () => {
     const res = await app
       .post('/matches/add')
       .send({
@@ -56,7 +52,7 @@ describe('add match endpoint', () => {
 
   it(`should fail if user is not admin`, async () => {
 
-    await DButils.execQuery(`insert into dbo.Users (UserName, UserRole) values ('Sarit', 'User')`)
+    await DButils.execQuery(`insert into dbo.Users (userPassword, userName, userRole) values ('pass', 'Sarit', 'User')`)
 
     const db_id = await DButils.execQuery(
       `select @@identity`
@@ -79,7 +75,7 @@ describe('add match endpoint', () => {
 
   it(`should create match if user is an admin`, async () => {
 
-    await DButils.execQuery(`insert into dbo.Users (UserName, UserRole) values ('Sarit', 'ADMIN')`)
+    await DButils.execQuery(`insert into dbo.Users (userPassword, userName, userRole) values ('pass', 'Sarit', 'ADMIN')`)
 
     const user_db_id = await DButils.execQuery(
       `select @@identity`

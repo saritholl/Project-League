@@ -1,91 +1,100 @@
 var express = require("express");
 var router = express.Router();
 const DButils = require("./utils/DButils");
+const Errors = require("../errors");
 
+const refereesBL = require("./BL/refereesBL");
+const refereesDAL = require("./DAL/refereesDAL");
 
-// UC 9.3
-router.post("/addReferee", async (req, res, next) => {
-  try {
-    if(!req.session || !req.session.user_id)
-    {
-    throw { status: 401, message: "please login before trying the following request" };
+const matchesDAL = require("./DAL/matchesDAL");
+
+const referees_utils = new refereesBL(new refereesDAL(), new matchesDAL())
+
+router.post("/add", async (req, res, next) => {
+
+  if (!req.headers || !req.headers.user_id) {
+    res.status(403).send(Errors.USER_NOT_LOGGED_IN)
+  } else {
+    const user = await DButils.execQuery(`SELECT * FROM dbo.Users where id = ${req.headers.user_id}`)
+
+    if (user.length == 0) {
+      res.status(403).send(Errors.USER_NOT_LOGGED_IN)
+    } else if (user[0].userRole != "ADMIN") {
+      res.status(403).send(Errors.USER_MUST_BE_ADMIN)
+    } else {
+      try {
+        let refereeName = req.body.refereeName;
+        let refereeRole = req.body.refereeRole;
+
+        const id = await referees_utils.addReferee(refereeName, refereeRole)
+
+        res.status(201).send({
+          id,
+          refereeName,
+          refereeRole
+        });
+
+      }
+      catch (error) {
+        next(error);
+      }
     }
-    const user = (
-    await DButils.execQuery(
-        `SELECT * FROM dbo.users WHERE username = '${req.session.user_id}'`
-    )
-    )[0];
-    if(user.is_admin === 0)
-    {
-    throw { status: 403, message: "no premission to do the following" };
+  }
+})
+
+// UC 9.4
+router.delete("/delete", async (req, res, next) => {
+  if (!req.headers || !req.headers.user_id) {
+    res.status(403).send(Errors.USER_NOT_LOGGED_IN)
+  } else {
+    const user = await DButils.execQuery(`SELECT * FROM dbo.Users where id = ${req.headers.user_id}`)
+
+    if (user.length == 0) {
+      res.status(403).send(Errors.USER_NOT_LOGGED_IN)
+    } else if (user[0].userRole != "ADMIN") {
+      res.status(403).send(Errors.USER_MUST_BE_ADMIN)
+    } else {
+      try {
+        let referee_id = req.body.id;
+        await referees_utils.deleteById(referee_id)
+
+        res.status(200).send('referee was deleted succsessfully');
+      } catch (error) {
+        next(error);
+      }
     }
-    
-    let referee_id = req.body.referee_id;
-    let referee_name = req.body.referee_name;
-    await DButils.execQuery(`INSERT INTO dbo.referees (referee_id,referee_name)
-     , ${home_team_id}, '${referee_name}')`
-    );
-    res.status(201).send('referee was added and created succsessfully');
-  } catch (error) {
-    next(error);
   }
 });
 
-// UC 9.4
-router.post("/deleteReferee", async (req, res, next) => {
-    try {
-      if(!req.session || !req.session.user_id)
-      {
-      throw { status: 401, message: "please login before trying the following request" };
+// UC 9.5
+router.put("/settingReferees", async (req, res, next) => {
+  if (!req.headers || !req.headers.user_id) {
+    res.status(403).send(Errors.USER_NOT_LOGGED_IN)
+  } else {
+    const user = await DButils.execQuery(`SELECT * FROM dbo.Users where id = ${req.headers.user_id}`)
+
+    if (user.length == 0) {
+      res.status(403).send(Errors.USER_NOT_LOGGED_IN)
+    } else if (user[0].userRole != "ADMIN") {
+      res.status(403).send(Errors.USER_MUST_BE_ADMIN)
+    } else {
+      try {
+
+        let matchId = ~~req.body.matchId;
+
+        let refereeId1 = ~~req.body.refereeId1;
+        let refereeId2 = ~~req.body.refereeId2;
+        let refereeId3 = ~~req.body.refereeId3;
+        let refereeId4 = ~~req.body.refereeId4;
+        await referees_utils.setRefereesToMatch(matchId, refereeId1, refereeId2, refereeId3, refereeId4)
+
+        res.status(200).send("Referres were succsessfully set to match");
+      } catch (error) {
+        next(error);
       }
-      const user = (
-      await DButils.execQuery(
-          `SELECT * FROM dbo.users WHERE username = '${req.session.user_id}'`
-      )
-      )[0];
-      if(user.is_admin === 0)
-      {
-      throw { status: 403, message: "no premission to do the following" };
-      }
-      
-      let referee_id = req.body.referee_id;
-      let referee_name = req.body.referee_name;
-      await DButils.execQuery(`DELETE referee_id, referee_name FROM dbo.referees WHERE referee_id = ${referee_id} AND referee_name = '${referee_name}')`);
-      res.status(201).send('referee was deleted succsessfully');
-    } catch (error) {
-      next(error);
     }
-  });
-  
-  // UC 9.5
-  // router.put("/settingReferee", async (req, res, next) => {
-  //   try{
-  //     if(!req.session || !req.session.user_id)
-  //     {
-  //       throw { status: 401, message: "please login before trying the following request" };
-  //     }
-  //     const user = (
-  //       await DButils.execQuery(
-  //         `SELECT * FROM dbo.users WHERE username = '${req.session.user_id}'`
-  //       )
-  //     )[0];
-  //     if(user.is_admin === 0)
-  //     {
-  //       throw { status: 403, message: "no premission to do the following" };
-  //     }
-  //     let league_name = req.body.league_name;
-  //     let league_year = req.body.league_year;
-  //     let referee_id = req.body.referee_id;
-  //     let referee_name = req.body.referee_name;
-  //     await DButils.execQuery(`UPDATE dbo.games SET home_team_score = ${home_score}, guest_team_score=${guest_score},is_past=1
-  //     WHERE game_id = ${game_id}`);
-  //     res.status(201).send("update result was successfully created.");
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  
-  // }
-  // );
- 
+  }
+});
+
 
 module.exports = router;

@@ -6,18 +6,18 @@ class matchesBL {
     this.teamsDAL = teamsDAL
     this.stadiumsDAL = stadiumsDAL
     this.roundsDAL = roundsDAL
-}
+  }
 
   async addMatch(roundId, homeTeamId, awayTeamId, stadiumId, startTime) {
 
-    if (roundId == null || homeTeamId == null || awayTeamId == null || stadiumId == null || startTime == null) {
+    if (!roundId || !homeTeamId || !awayTeamId || !stadiumId || !startTime) {
       throw {
         "message": Errors.PARAMETER_NULL,
-        "code": 404
+        "code": 400
       }
     }
 
-    if (!(Number.isInteger(roundId)) || !(Number.isInteger(homeTeamId)) || !(Number.isInteger(awayTeamId)) || !(Number.isInteger(stadiumId)) || !(typeof startTime === 'string')){
+    if (!(Number.isInteger(roundId)) || !(Number.isInteger(homeTeamId)) || !(Number.isInteger(awayTeamId)) || !(Number.isInteger(stadiumId)) || !(typeof startTime === 'string')) {
       throw {
         "message": Errors.WRONG_INSTANCE_OF_PARAMETER,
         "code": 400
