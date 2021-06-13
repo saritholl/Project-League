@@ -16,3 +16,4 @@ FROM dbo.Users
 GO
 
 -- insert into dbo.Users (userPassword, userName, userRole) values ('password', 'Sarit', 'User')
+-- insert into dbo.Users (userPassword, userName, userRole) values ('password', 'Sarit1', 'ADMIN')

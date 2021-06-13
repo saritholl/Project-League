@@ -38,6 +38,14 @@ class refereesBL {
       }
     }
 
+    const referee_matches = await this.matchesDAL.getMatchesByRefereeId(id)
+    if (referee_matches.length > 0){
+      throw {
+        "message": Errors.REFEREE_IS_SET_TO_A_MATCH,
+        "code": 400
+      }
+    }
+
     this.refereesDAL.deleteRefereeById(id)
   }
 
@@ -118,10 +126,10 @@ class refereesBL {
     const referee3_matches = await this.matchesDAL.getMatchesByRefereeId(refereeId3)
     const referee4_matches = await this.matchesDAL.getMatchesByRefereeId(refereeId4)
     const match_day = new Date(match.startTime)
-    if (this.#refereeHasMatchInDate(referee1_matches, match_day) ||
-      this.#refereeHasMatchInDate(referee2_matches, match_day) ||
-      this.#refereeHasMatchInDate(referee3_matches, match_day) ||
-      this.#refereeHasMatchInDate(referee4_matches, match_day)) {
+    if (this.#refereeHasMatchInDate(referee1_matches, match_day, matchId) ||
+      this.#refereeHasMatchInDate(referee2_matches, match_day, matchId) ||
+      this.#refereeHasMatchInDate(referee3_matches, match_day, matchId) ||
+      this.#refereeHasMatchInDate(referee4_matches, match_day, matchId)) {
       throw {
         "message": Errors.REFEREE_ALREADY_SET_TO_MATCH_THIS_DAY,
         "code": 400
@@ -132,8 +140,8 @@ class refereesBL {
     return true
   }
 
-  #refereeHasMatchInDate = (matches, date) =>
-    matches.some(match => this.#datesAreOnSameDay(new Date(match.startTime), date))
+  #refereeHasMatchInDate = (matches, date, ignored_match_id) =>
+    matches.filter(match => match.id != ignored_match_id).some(match => this.#datesAreOnSameDay(new Date(match.startTime), date))
 
   #datesAreOnSameDay = (first, second) =>
     first.getFullYear() === second.getFullYear() &&

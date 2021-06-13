@@ -12,10 +12,17 @@ const referees_utils = new refereesBL(new refereesDAL(), new matchesDAL())
 
 router.post("/add", async (req, res, next) => {
 
-  if (!req.headers || !req.headers.user_id) {
+  if ((!req.headers || !req.headers.user_id) && (!req.session || !req.session.user_id)) {
     res.status(403).send(Errors.USER_NOT_LOGGED_IN)
   } else {
-    const user = await DButils.execQuery(`SELECT * FROM dbo.Users where id = ${req.headers.user_id}`)
+    user_id = ""
+    if (req.headers && req.headers.user_id){
+      user_id = req.headers.user_id
+    }
+    else if (req.session && req.session.user_id){
+      user_id = req.session.user_id
+    }
+    const user = await DButils.execQuery(`SELECT * FROM dbo.Users where id = ${user_id}`)
 
     if (user.length == 0) {
       res.status(403).send(Errors.USER_NOT_LOGGED_IN)
@@ -44,10 +51,17 @@ router.post("/add", async (req, res, next) => {
 
 // UC 9.4
 router.delete("/delete", async (req, res, next) => {
-  if (!req.headers || !req.headers.user_id) {
+  if ((!req.headers || !req.headers.user_id) && (!req.session || !req.session.user_id)) {
     res.status(403).send(Errors.USER_NOT_LOGGED_IN)
   } else {
-    const user = await DButils.execQuery(`SELECT * FROM dbo.Users where id = ${req.headers.user_id}`)
+    user_id = ""
+    if (req.headers && req.headers.user_id){
+      user_id = req.headers.user_id
+    }
+    else if (req.session && req.session.user_id){
+      user_id = req.session.user_id
+    }
+    const user = await DButils.execQuery(`SELECT * FROM dbo.Users where id = ${user_id}`)
 
     if (user.length == 0) {
       res.status(403).send(Errors.USER_NOT_LOGGED_IN)
@@ -68,10 +82,17 @@ router.delete("/delete", async (req, res, next) => {
 
 // UC 9.5
 router.put("/settingReferees", async (req, res, next) => {
-  if (!req.headers || !req.headers.user_id) {
+  if ((!req.headers || !req.headers.user_id) && (!req.session || !req.session.user_id)) {
     res.status(403).send(Errors.USER_NOT_LOGGED_IN)
   } else {
-    const user = await DButils.execQuery(`SELECT * FROM dbo.Users where id = ${req.headers.user_id}`)
+    user_id = ""
+    if (req.headers && req.headers.user_id){
+      user_id = req.headers.user_id
+    }
+    else if (req.session && req.session.user_id){
+      user_id = req.session.user_id
+    }
+    const user = await DButils.execQuery(`SELECT * FROM dbo.Users where id = ${user_id}`)
 
     if (user.length == 0) {
       res.status(403).send(Errors.USER_NOT_LOGGED_IN)

@@ -135,6 +135,7 @@ describe('referees BL UT - set refs', () => {
 
     });
 
+
     test(`set refs: duplicate ref`, async () => {
         await expect(bl.setRefereesToMatch(matchId, refereeId1, refereeId2, refereeId3, refereeId3)).rejects.toEqual(
             {
@@ -351,6 +352,25 @@ describe('referees BL UT - add + delete', () => {
                 refereeRole: refereeRoleAssitant
             }
         )
+    });
+
+    test(`can't delete referee already set to a match`, async () => {
+
+        matchesDal.givenMatch({
+            id: 1241,
+            roundId: 5,
+            homeTeamId: 6,
+            awayTeamId: 4,
+            stadiumId: 9,
+            startTime,
+            refereeId4: refereeId4
+        })
+
+        await expect(bl.deleteById(refereeId4)).rejects.toEqual(
+            {
+            "message": Errors.REFEREE_IS_SET_TO_A_MATCH,
+            "code": 400
+        })
     });
 
     test(`deleteReferee successufully`, async () => {

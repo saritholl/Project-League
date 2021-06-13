@@ -22,6 +22,7 @@ const REFEREE_NOT_FOUND = `Referee not found`
 const NO_MAIN_REFEREE = `Can't have match without main referee`
 const DUPLICATE_REFEREE = `Referee already set in this game`
 const REFEREE_ALREADY_SET_TO_MATCH_THIS_DAY = `Referee already set to a match on this day`
+const REFEREE_IS_SET_TO_A_MATCH = `can't be deleted - Referee is set to a match`
 
 exports.TEAM_AGAINST_ITSELFS = TEAM_AGAINST_ITSELFS;
 exports.TEAM_ALREADY_PLAYS_THIS_DAY = TEAM_ALREADY_PLAYS_THIS_DAY;
@@ -48,3 +49,4 @@ exports.DUPLICATE_REFEREE = DUPLICATE_REFEREE
 exports.REFEREE_NOT_FOUND = REFEREE_NOT_FOUND;
 exports.REFEREE_ALREADY_SET_TO_MATCH_THIS_DAY = REFEREE_ALREADY_SET_TO_MATCH_THIS_DAY
 exports.INVALID_REFEREE_ROLE = INVALID_REFEREE_ROLE
+exports.REFEREE_IS_SET_TO_A_MATCH = REFEREE_IS_SET_TO_A_MATCH

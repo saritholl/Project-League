@@ -12,10 +12,17 @@ const matches_utils = new matchesBL(new matchesDAL(), new teamsDAL(), new stadiu
 
 router.post("/add", async (req, res, next) => {
 
-  if (!req.headers || !req.headers.user_id) {
+  if ((!req.headers || !req.headers.user_id) && (!req.session || !req.session.user_id)) {
     res.status(403).send(Errors.USER_NOT_LOGGED_IN)
   } else {
-    const user = await DButils.execQuery(`SELECT * FROM dbo.Users where id = ${req.headers.user_id}`)
+    user_id = ""
+    if (req.headers && req.headers.user_id){
+      user_id = req.headers.user_id
+    }
+    else if (req.session && req.session.user_id){
+      user_id = req.session.user_id
+    }
+    const user = await DButils.execQuery(`SELECT * FROM dbo.Users where id = ${user_id}`)
 
     if (user.length == 0) {
       res.status(403).send(Errors.USER_NOT_LOGGED_IN)
